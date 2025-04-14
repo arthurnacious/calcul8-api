@@ -1,9 +1,14 @@
 {
   "name": "api",
   "scripts": {
-    "dev": "bun run --hot src/index.ts"
+    "dev": "bun run --hot src/index.ts",
+    "generate": "bun drizzle-kit generate",
+    "migrate": "bun drizzle-kit migrate",
+    "push": "bun drizzle-kit push",
+    "seed": "bun run src/db/seeds/index.ts"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.7.0",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.41.0",
     "hono": "^4.7.6",
