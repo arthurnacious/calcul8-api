@@ -1,10 +1,7 @@
-import { getTenantSchema } from "../schemas/tenant";
+import type { Context } from "hono";
 
-export type TenantTables = ReturnType<typeof getTenantSchema>["tables"];
+type Variables = {
+  tenantId: string;
+};
 
-export interface TenantContext {
-  tables: {
-    payslips: ReturnType<typeof getTenantSchema>["tables"]["payslips"];
-    employees: ReturnType<typeof getTenantSchema>["tables"]["employees"];
-  };
-}
+export type TenantContext = Context<{ Variables: Variables }>;

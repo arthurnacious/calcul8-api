@@ -4,3 +4,6 @@ node_modules/
 .env*
 
 !.env.example
+
+# Drizzle migrations (generated files)
+src/db/migrations/

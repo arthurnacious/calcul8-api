@@ -16,13 +16,28 @@ export async function tenantsSeeder(
   await db.delete(usersToTenants);
 
   console.log(`Seeding ${count} tenants in batches of ${batch}...`);
+  const usedSubdomains = new Set<string>();
+  function generateUniqueSubdomain(): string {
+    let subdomain: string;
+    let attempts = 0;
+
+    do {
+      subdomain = faker.helpers.slugify(faker.company.name()).toLowerCase();
+      attempts++;
+      if (attempts > 10)
+        throw new Error("Too many attempts to generate unique subdomain");
+    } while (usedSubdomains.has(subdomain));
+
+    usedSubdomains.add(subdomain);
+    return subdomain;
+  }
 
   for (let i = 0; i < count; i += batch) {
     const batchSize = Math.min(batch, count - i);
 
     const tenantData = Array.from({ length: batchSize }, () => ({
       name: faker.company.name(),
-      subdomain: faker.helpers.slugify(faker.company.name()).toLowerCase(),
+      subdomain: generateUniqueSubdomain(),
       isActive: faker.datatype.boolean(0.8), // 80% chance of being active
       createdAt: faker.date.past({ years: 1 }),
     }));

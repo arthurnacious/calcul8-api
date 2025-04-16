@@ -33,7 +33,7 @@ async function seed(options: SeedOptions = {}) {
 
 async function main() {
   await seed({
-    users: 1000,
+    users: 2,
     tenants: 50,
     batch: 1500,
   });

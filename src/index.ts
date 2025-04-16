@@ -7,4 +7,7 @@ const app = new Hono();
 app.route("/auth", auth);
 app.route("/payslips", payslips);
 
-export default app;
+export default {
+  port: 8000,
+  fetch: app.fetch,
+};

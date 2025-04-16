@@ -1,19 +1,15 @@
-import { Context } from "hono";
-import { getTenantSchema } from "../schemas/tenant";
-import { TenantContext, TenantTables } from "../types/tenant";
+import { MiddlewareHandler } from "hono";
 
-declare module "hono" {
-  interface ContextVariableMap {
-    tenant: TenantContext; // Global type for c.get/c.set
-  }
-}
-
-export async function tenantMiddleware(c: Context, next: () => Promise<void>) {
+export const tenantMiddleware: MiddlewareHandler<{
+  Variables: {
+    tenantId: string;
+  };
+}> = async (c, next) => {
   const tenantId = c.req.header("x-tenant-id");
-  if (!tenantId) throw new Error("Tenant ID required");
+  if (!tenantId) {
+    return c.json({ error: "Tenant ID is required" }, 400);
+  }
 
-  const { tables } = getTenantSchema(tenantId);
-  c.set("tenant", { tables } satisfies TenantContext);
-
+  c.set("tenantId", tenantId);
   await next();
-}
+};
